@@ -1,6 +1,7 @@
 import React,{Component} from 'react';
 import { Redirect } from 'react-router-dom';
 import { getFromStorage, setInStorage } from "./storage";
+import Tweet from './Tweet.js';
 
 class Home extends Component {
   constructor(props) {
@@ -19,14 +20,23 @@ class Home extends Component {
   }
 
   render() {
-    if (getFromStorage('local') === "true") {
+    if (this.props.isloggedIn=== "true") {
 
       if (!this.state.logout) {
         return (
           <div>
-              <p>{getFromStorage("local")}</p>
-            <button onClick={this.onClick}>Logout</button>
+            <p>{getFromStorage("local")}</p>
+           
+            <button
+              style={{float:"right"}}
+              type="button"
+              onClick={this.onClick}
+              class="btn btn-secondary"
+            >
+              Logout
+            </button>
             <h1>{this.props.isloggedIn}</h1>
+            <Tweet tweets={this.props.tweets} />
           </div>
         );
       } else {
