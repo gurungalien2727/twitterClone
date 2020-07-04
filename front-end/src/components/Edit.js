@@ -1,5 +1,6 @@
 
 import React,{Component} from 'react';
+import axios from 'axios';
 
 class Edit extends Component{
 
@@ -7,21 +8,6 @@ class Edit extends Component{
     constructor(props){
         super(props);
          this.state = {
-           tweets: [
-             {
-               name: "Alien",
-               tweet: "This is aliens tweet",
-             },
-             {
-               name: "Sani",
-               tweet: "This is sani tweet",
-             },
-
-             {
-               name: "Nanu",
-               tweet: "This is nanus tweet",
-             },
-           ],
            tweet: "",
          };
          this.onChange=this.onChange.bind(this);
@@ -29,15 +15,22 @@ class Edit extends Component{
     }
 
     componentDidMount(){
+      alert(this.props.match.params.id);
+      //localhost:4000/tweets
+      http: axios
+              .get("http://localhost:4000/" + this.props.match.params.id)
+              .then((res) => {
+                this.setState({
+                  tweet: res.data.tweet,
+                });
+              })
+              .catch((err) => {
+                alert(err);
+              });
+      }
+      
 
-        this.setState({
-           tweet: this.state.tweets[this.props.match.params.id].tweet
-        })
 
-
-    }
-
-  
     onChange(e){
         this.setState({
             tweet:e.target.value
@@ -46,45 +39,29 @@ class Edit extends Component{
 
     onSubmit(e){
         e.preventDefault();
-        const newList=[...this.state.tweets];
-        newList[this.props.match.params.id].tweet=this.state.tweet;
-        this.setState({
-            tweets:newList
-        })
-     
-        this.setState({
-            tweet:''
-        })
-        
-        //window.location="/homepage";
+        axios.put("http://localhost:4000/update/"+this.props.match.params.id,{newTweet:this.state.tweet})
+        .then((res)=>alert(res.data))
+        .catch((err)=>alert(err));
+
+      window.location="/homepage";
     }
-
-
 
     render(){
 
-
-        return (<div>
+  return (<div>
 
 From Component Edit
-         <form onSubmit={this.onSubmit}>
 
-<input type="text" value={this.state.tweet} onChange={this.onChange}/>
-<input type="submit" value="Edit"/>
+   <form onSubmit={this.onSubmit}>
+     <input type="text" onChange={this.onChange} value={this.state.tweet}></input>
+     <input type="submit" value="Edit"/>
+   </form>
 
+       
 
-         </form>
+       </div>
 
-         {this.state.tweets.map((item)=>(
-             <p>{item.tweet}</p>
-         ))}
-
-
-
-        </div>)
-
-
-
+  )
     }
 
 

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import {Redirect } from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import axios from 'axios';
 import{
   getFromStorage,setInStorage
@@ -12,14 +13,15 @@ class Login extends Component {
     this.state={
         email:'',
         password:'',
+        userId:'',
         isLoggedIn:false
     }
-    this.onChangeEmail=this.onChangeEmail.bind(this);
+    this.onChangeUsername=this.onChangeUsername.bind(this);
     this.onChangePassword=this.onChangePassword.bind(this);
     this.onsubmit=this.onsubmit.bind(this);
   }
 
-  onChangeEmail(e){
+  onChangeUsername(e){
     this.setState({
         email:e.target.value,
     })
@@ -35,7 +37,7 @@ class Login extends Component {
  e.preventDefault();
  alert(this.state.email+ " "+ this.state.password);
  const data={
-     email:this.state.email,
+     username:this.state.email,
      password:this.state.password
  }
  axios.post("http://localhost:4000/",data)
@@ -43,8 +45,10 @@ class Login extends Component {
        alert(r.data.login);
        if(r.data.login==="sucessful"){
            this.setState({
-               isLoggedIn:true
+               isLoggedIn:true,
+               userId:r.data.id
            })
+      alert(r.data.id);
        }
          
        
@@ -52,15 +56,13 @@ class Login extends Component {
  )
 }
 
-
-
   render() {
    
-
     if(this.state.isLoggedIn){
 
         this.props.change("true");
         setInStorage('local',"true");
+        setInStorage('id',this.state.userId);
        return <Redirect to='/homepage'/>
     
   }
@@ -69,19 +71,19 @@ class Login extends Component {
 
     return (
       <div className="container">
-    
         <div>
-        <p>{this.props.isLoggedIn}</p>
+          <p>{getFromStorage("id")}</p>
+          <p>{this.props.isLoggedIn}</p>
           <h3 style={{ textAlign: "center" }}>Twitter Clone</h3>
           <form onSubmit={this.onsubmit}>
             <div class="form-group">
-              <label for="exampleInputEmail1">Email address</label>
+              <label for="username">Username</label>
               <input
-                type="email"
+                type="text"
                 class="form-control"
-                id="exampleInputEmail1"
+                id="username"
                 aria-describedby="emailHelp"
-                onChange={this.onChangeEmail}
+                onChange={this.onChangeUsername}
               />
               <small id="emailHelp" class="form-text text-muted">
                 We'll never share your email with anyone else.
@@ -101,6 +103,10 @@ class Login extends Component {
               Login
             </button>
           </form>
+          <br />
+          <div>
+            <Link to={{ pathname: "/register" }}>Sign Up </Link>
+          </div>
         </div>
       </div>
     );

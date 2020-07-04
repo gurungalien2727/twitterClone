@@ -12,7 +12,6 @@ class Home extends Component {
     this.onClick = this.onClick.bind(this);
   }
 
-  
   onClick() {
     this.setState({
       logout: true,
@@ -26,6 +25,7 @@ class Home extends Component {
         return (
           <div>
             <p>{getFromStorage("local")}</p>
+            <p>{getFromStorage("id")}</p>
            
             <button
               style={{float:"right"}}
@@ -42,6 +42,7 @@ class Home extends Component {
       } else {
         this.props.change("false");
         localStorage.removeItem("local");
+        localStorage.removeItem("id");
         return <Redirect to="/" />;
       }
     } else {
