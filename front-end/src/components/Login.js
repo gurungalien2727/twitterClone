@@ -11,7 +11,7 @@ class Login extends Component {
   constructor(props) {
     super(props);
     this.state={
-        email:'',
+        username:'',
         password:'',
         userId:'',
         isLoggedIn:false
@@ -23,7 +23,7 @@ class Login extends Component {
 
   onChangeUsername(e){
     this.setState({
-        email:e.target.value,
+        username:e.target.value,
     })
   }
 
@@ -35,20 +35,21 @@ class Login extends Component {
 
   onsubmit(e){
  e.preventDefault();
- alert(this.state.email+ " "+ this.state.password);
+ alert(this.state.username+ " "+ this.state.password);
  const data={
-     username:this.state.email,
+     username:this.state.username,
      password:this.state.password
  }
  axios.post("http://localhost:4000/",data)
- .then((r)=>{
-       alert(r.data.login);
-       if(r.data.login==="sucessful"){
+ .then((res)=>{
+       alert(res.data.login);
+       if(res.data.login==="sucessful"){
            this.setState({
                isLoggedIn:true,
-               userId:r.data.id
+               userId:res.data.id,
+               username:res.data.username
            })
-      alert(r.data.id);
+      alert(res.data.username);
        }
          
        
@@ -63,6 +64,7 @@ class Login extends Component {
         this.props.change("true");
         setInStorage('local',"true");
         setInStorage('id',this.state.userId);
+        setInStorage('username',this.state.username);
        return <Redirect to='/homepage'/>
     
   }
@@ -72,8 +74,6 @@ class Login extends Component {
     return (
       <div className="container">
         <div>
-          <p>{getFromStorage("id")}</p>
-          <p>{this.props.isLoggedIn}</p>
           <h3 style={{ textAlign: "center" }}>Twitter Clone</h3>
           <form onSubmit={this.onsubmit}>
             <div class="form-group">
@@ -99,13 +99,13 @@ class Login extends Component {
               />
             </div>
 
-            <button type="submit" class="btn btn-primary">
+            <button type="submit" class="btn btn-light">
               Login
             </button>
           </form>
           <br />
           <div>
-            <Link to={{ pathname: "/register" }}>Sign Up </Link>
+            <Link to={{ pathname: "/register" }} style={{color:"white"}}>Sign Up </Link>
           </div>
         </div>
       </div>

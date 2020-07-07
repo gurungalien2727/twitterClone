@@ -2,11 +2,25 @@
 
      box-shadow: 0 1px 6px rgba(0, 0, 0, 0.12), 0 1px 4px rgba(0, 0, 0, 0.24);
      margin-left: 25%;
+     height: 350px;
+     border-radius: 25px;
+     width:50%;
+     padding: 40px ;
+     margin-bottom: 40px;
+     overflow: hidden;
+     text-overflow: ellipsis; 
+     background-color: whitesmoke;
+     
+}
+
+.divTweet{
+
+     margin-left: 25%;
      height: 200px;
      width:50%;
      padding: 40px ;
      margin-bottom: 40px;
      overflow: hidden;
      text-overflow: ellipsis; 
-     
+
 }

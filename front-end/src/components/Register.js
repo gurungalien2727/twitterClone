@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
+import { Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 
 class Register extends Component {
@@ -35,7 +37,7 @@ class Register extends Component {
     };
     axios.post("http://localhost:4000/register", data).then((res) => {
      
-    console.log(res.data);
+    alert(res.data.name);
      
     });
     window.location='/';
@@ -58,7 +60,6 @@ class Register extends Component {
                   aria-describedby="emailHelp"
                   onChange={this.onChangeUsername}
                 />
-              
               </div>
               <div class="form-group">
                 <label for="exampleInputPassword1">Password</label>
@@ -70,11 +71,15 @@ class Register extends Component {
                 />
               </div>
 
-              <button type="submit" class="btn btn-primary">
+              <button type="submit" class="btn btn-light">
                 Sign Up
               </button>
             </form>
-            
+            <br/>
+            <Link to={{ pathname: "/" }} style={{ color: "white" }}>
+
+              Already have an account{" "}
+            </Link>
           </div>
         </div>
       );

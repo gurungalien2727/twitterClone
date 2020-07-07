@@ -24,9 +24,6 @@ class Home extends Component {
       if (!this.state.logout) {
         return (
           <div>
-            <p>{getFromStorage("local")}</p>
-            <p>{getFromStorage("id")}</p>
-           
             <button
               style={{float:"right"}}
               type="button"
@@ -35,7 +32,7 @@ class Home extends Component {
             >
               Logout
             </button>
-            <h1>{this.props.isloggedIn}</h1>
+            <h3>{getFromStorage('username')}</h3>
             <Tweet tweets={this.props.tweets} />
           </div>
         );
@@ -43,6 +40,7 @@ class Home extends Component {
         this.props.change("false");
         localStorage.removeItem("local");
         localStorage.removeItem("id");
+        localStorage.removeItem("username");
         return <Redirect to="/" />;
       }
     } else {

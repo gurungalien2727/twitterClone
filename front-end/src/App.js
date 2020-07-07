@@ -2,6 +2,7 @@ import React from "react";
 import Login from "./components/Login.js";
 import Home from "./components/Home.js";
 import Register from './components/Register.js';
+import Comment from './components/Comment.js';
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import axios from "axios";
 import { getFromStorage, setInStorage } from "./components/storage";
@@ -51,7 +52,12 @@ class App extends React.Component {
           )}
         />
         <Route path="/edit/:id" exact render={(props) => <Edit {...props} />} />
-        <Route path="/register" exact render={(props) => <Register {...props} />} />
+        <Route path="/comment/:id" exact render={(props) => <Comment {...props} />} />
+        <Route
+          path="/register"
+          exact
+          render={(props) => <Register {...props} />}
+        />
       </Router>
     );
   }

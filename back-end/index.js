@@ -37,7 +37,7 @@ User.findOne({ username: req.body.username, password: req.body.password }).then(
 }
   else {
     console.log(doc._id);
-    res.json({login:"sucessful",id:doc._id});
+    res.json({login:"sucessful",id:doc._id,username:doc.username});
   }
 });
 })
@@ -51,17 +51,18 @@ app.post('/register',(req,res)=>{
    newUser
      .save()
      .then(() => res.json("New User Registered"))
-     .catch((err) => res.status(400).json("Error:" + err));
+     .catch((err) => { res.json(err);
+    console.log(err)});
 })
 
 //add tweets
 app.post('/postTweets',(req,res)=>{
   console.log("Endpoint hit");
-  const userId=req.body.userId;
+  const username=req.body.username;
   const tweet=req.body.tweet;
   const date=ts;
   const newTweet=new Tweet({
-      userId,tweet,date
+      username,tweet,date
   })
   newTweet.save().then(()=>res.json("New Tweet Added"))
   .catch((err)=>res.status(400).json("Error:"+err))
@@ -118,39 +119,7 @@ app.get('/:id',(req,res)=>{
 })
 
 
-//follow route
-app.post("/follow",(req, res) => {
-                     console.log(req.body.userId + " " + req.body.follows);
-                     userId =req.body.userId;
-                     follows =req.body.follows;
-
-                     const test = new Follows({
-                       userId,
-                       follows,
-                     });
-
-                     test.save().then(()=>res.json("Added")).catch((err)=>res.json(err));
-                   })
-
-app.get("/tweets/follows", (req, res) => {
- console.log(req.query.userId+ " "+ req.query.follows);
-
- Follows.findOne({
-   userId: req.query.userId,
-   follows: req.body.follows,
- }).then(function (doc) {
-   if (!doc) {
-     console.log("No record found");
-     res.json({ status: "unfollowed" });
-   } else {
-    
-     res.json({ status: "followed", id: doc._id });
-   }
- });
- 
-});
-
-
+/
 
 
 app.listen(4000,()=>{

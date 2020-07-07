@@ -9,28 +9,33 @@ function Block(props){
   //alert(props.name);
  // alert(getFromStorage('id'));
 
-  if(props.name==getFromStorage('id')){
+  if(props.name==getFromStorage('username')){
   return (
     <div>
       <div className="div">
-        <h5>{props.name}</h5>
-        <small>{props.time}</small><br/>
-        Tweet
-        <p>{props.tweet}</p>
-        
-        <p></p>
-        <Link to={{pathname:"/edit/" + props.item._id
-      
-      }} >Edit </Link> 
-        <button
+        <p style={{ fontSize: "40px" }}>
+          <u>{props.name}</u>
+        </p>
 
+        <div style={{ backgroundColor: "white" }}>
+          <p style={{ fontSize: "20px" }}>{props.tweet}</p>
+        </div>
+        <br />
+
+        <Link
+          style={{ marginLeft: "78%" }}
+          to={{ pathname: "/edit/" + props.item._id }}
+        >
+          Edit{" "}
+        </Link>
+        <button
           type="button"
           class="btn btn-danger"
           onClick={() => {
             props.delete(props.item._id);
           }}
         >
-          Delete Post
+          delete
         </button>
       </div>
     </div>
@@ -41,21 +46,19 @@ function Block(props){
           return (
             <div>
               <div className="div">
-                <h5>{props.name}</h5>
-              
-                <button style={{float:"right"}}type="button" class="btn btn-primary" 
-                
-                onClick={()=>{
-                  props.follow(props.name)
-                }}
-                >
-                  {props.status}
-                </button>
+                <p style={{ fontSize: "40px" }}>
 
-                <small>{props.time}</small>
+                  <u>{props.name}</u>
+                </p>
+               
+
+                  <div style={{backgroundColor:"white"}}>
+                <p style={{ fontFamily: "Helvetica Neue", fontSize: "20px" }}>
+                  {props.tweet}
+                </p>
+                </div>
                 <br />
-                Tweet
-                <p>{props.tweet}</p>
+              
               </div>
             </div>
           );
@@ -87,13 +90,12 @@ class Tweet extends Component{
           ],
           newTweets:[],
           tweet:'',
-          status:'follow'
+  
         };
         this.delete=this.delete.bind(this);
         this.onChangeTweet=this.onChangeTweet.bind(this);
         this.onSubmit=this.onSubmit.bind(this);
         this.update=this.update.bind(this);
-        this.follow=this.follow.bind(this);
         this.check=this.check.bind(this);
        
     
@@ -146,13 +148,13 @@ onSubmit(e){
 e.preventDefault();
 //alert(this.state.tweet);
 const newPost={
-    userId:getFromStorage("id"),
+    username:getFromStorage("username"),
     tweet:this.state.tweet
 }
 
 axios.post("http://localhost:4000/postTweets",newPost)
 .then((res)=>{
-  //alert(res.data);
+  alert(res.data);
 })
 
 
@@ -165,35 +167,14 @@ this.componentDidMount();
 }
 
 
-follow(id){
-  
-  alert("follow");
-  const users={
-    userId:getFromStorage("id"),
-    follows:id
-  }
-  
-  if(this.state.status==="follow"){
-    axios
-      .post("http://localhost:4000/follow", users)
-      .then((res) => alert(res.data))
-      .catch((err) => alert(err));
 
-  this.setState({
-    status:"Following"
-
-  })
-  }
-
-  
-}
 
 check(id){
     alert(id);
 axios.get('http://localhost:4000/tweets/follows',{
   params:{
   
-    userId:getFromStorage("id"),
+    username:getFromStorage("username"),
     follows:id
 
   }
@@ -218,31 +199,41 @@ axios.get('http://localhost:4000/tweets/follows',{
 
 }
 
-
-
-
-
     render(){
 
     return (
       <div>
-        <p>From Component Tweet</p>
-        <form onSubmit={this.onSubmit}>
-            <input value={this.state.tweet} onChange={this.onChangeTweet} />
-            <input type="submit" value="Tweet"/>
-            
-        </form>
-        <br/><br/>
-
-
-        {this.state.newTweets.reverse().map((item,index)=>(
-        
-            <Block tweets={this.state.tweets} key={item._id} name={item.userId} time={item.createdAt} tweet={item.tweet} delete={this.delete} status={this.state.status} update={this.update} item={item} follow={this.follow} check={this.check}/>
-        ))}
-
+        <div className="divTweet">
+      
+            <textarea
+              class="form-control"
+              id="exampleFormControlTextarea1"
+              rows="3"
+              type="textarea"
+              value={this.state.tweet}
+              onChange={this.onChangeTweet}
+            ></textarea>
+            <button style={{float:"right"}} type="button" class="btn btn-primary" onClick={this.onSubmit}>
+              Tweet
+            </button>
+        </div>
        
-
-       </div>
+        {this.state.newTweets.reverse().map((item, index) => (
+        
+          <Block
+            tweets={this.state.tweets}
+            key={item._id}
+            name={item.username}
+            time={item.createdAt}
+            tweet={item.tweet}
+            delete={this.delete}
+            status={this.state.status}
+            update={this.update}
+            item={item}
+            check={this.check}
+          />
+        ))}
+      </div>
     );
 
     }

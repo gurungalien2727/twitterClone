@@ -48,20 +48,27 @@ class Edit extends Component{
 
     render(){
 
-  return (<div>
-
-From Component Edit
-
-   <form onSubmit={this.onSubmit}>
-     <input type="text" onChange={this.onChange} value={this.state.tweet}></input>
-     <input type="submit" value="Edit"/>
-   </form>
-
-       
-
-       </div>
-
-  )
+  return (
+    <div className="divTweet">
+     
+      <textarea
+        class="form-control"
+        id="exampleFormControlTextarea1"
+        rows="3"
+        type="textarea"
+        value={this.state.tweet}
+        onChange={this.onChange}
+      ></textarea>
+      <button
+        style={{ float: "right" }}
+        type="button"
+        class="btn btn-primary"
+        onClick={this.onSubmit}
+      >
+        Edit
+      </button>
+    </div>
+  );
     }
 
 
